@@ -1,4 +1,3 @@
-import os
 import drills
 from functools import partial
 from tkinter import *
