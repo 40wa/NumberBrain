@@ -45,7 +45,7 @@ class NumeracyApp:
         addition = Button(drills_menu, text='rapid addition', font=('Arial Bold', 20))
         addition.pack(side=TOP)
 
-        zetamac = Button(drills_menu, text='zetamac vanilla', font=('Arial Bold', 20), command=partial(drills.zetamac, self))
+        zetamac = Button(drills_menu, text='zetamac vanilla', font=('Arial Bold', 20), command=partial(drills.Zetamac, self))
         zetamac.pack(side=TOP)
 
         # Analysis Menu items 
