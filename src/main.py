@@ -38,13 +38,12 @@ class NumeracyApp:
         drills_header = Label(drills_menu, text='DRILLS', font=('Arial Bold', 30))
         drills_header.pack(side=TOP)
 
-        timestable = Button(drills_menu, text='times tables', font=('Arial Bold', 20))
-        timestable.pack(side=TOP)
-
+        timestable = Button(drills_menu, text='times tables', font=('Arial Bold', 20), command=partial(drills.TimesTables, self))
         addition = Button(drills_menu, text='rapid addition', font=('Arial Bold', 20))
-        addition.pack(side=TOP)
-
         zetamac = Button(drills_menu, text='zetamac vanilla', font=('Arial Bold', 20), command=partial(drills.Zetamac, self))
+
+        timestable.pack(side=TOP)
+        addition.pack(side=TOP)
         zetamac.pack(side=TOP)
 
         # Analysis Menu items 

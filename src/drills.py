@@ -12,18 +12,13 @@ class Zetamac(Quizzer):
         self.problem_bar.configure(text = self.sample())
 
     def input_callback(self, var, idx, mode):
-        # Check whether can be parsed as an int
+
         if self.input_var.get().isdigit():
             v = int(self.input_var.get())
 
             if v == self.answer:
                 self.solved_ctr += 1
                 self.next_problem()
-        else:
-            if self.input_var.get() == 'r':
-                self.run_game()
-            elif self.input_var.get() == 'e':
-                self.end_game()
 
     def sample(self):
         # Grab pairs uniformly out of the distr,
@@ -46,4 +41,25 @@ class Zetamac(Quizzer):
             a,b = randrange(*self.multn_spec[0]), randrange(*self.multn_spec[1])
             self.answer = a
             return ' / '.join([str(a*b), str(b)])
-   
+
+class TimesTables(Quizzer):
+    def init_state(self):
+        self.lmult_spec = (1,26)
+        self.rmult_spec = (1,26)
+
+    def next_problem(self):
+        self.input_box.delete(0, END)
+        self.problem_bar.configure(text = self.sample())
+
+    def input_callback(self, var, idx, mode):
+        if self.input_var.get().isdigit():
+            v = int(self.input_var.get())
+            if v == self.answer:
+                self.solved_ctr += 1
+                self.next_problem()
+
+    def sample(self):
+        a,b = randrange(*self.lmult_spec), randrange(*self.rmult_spec)
+        self.answer = a * b
+        return ' * '.join([str(a), str(b)])
+

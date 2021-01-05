@@ -22,7 +22,7 @@ class Quizzer(ABC):
 
         # Wire a StringVar to the input box for input checking
         self.input_var = StringVar()
-        self.input_var.trace_add('write', self.input_callback)
+        self.input_var.trace_add('write', self.input_callback_wrapper)
         self.input_box.configure(textvariable = self.input_var)
 
         # Create a variable pertaining to current valid timer, all others die 
@@ -47,6 +47,16 @@ class Quizzer(ABC):
         self.next_problem()
         self.solved_ctr = 0
         self.countdown(120)
+
+    def input_callback_wrapper(self, var, idx, mode):
+        c = self.input_var.get()
+        if c == 'r':
+            self.run_game()
+        elif c == 'e':
+            self.end_game()
+        else:
+            return self.input_callback(var, idx, mode)
+
 
     @abstractmethod
     def init_state(self):
