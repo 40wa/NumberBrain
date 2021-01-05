@@ -35,8 +35,8 @@ class NumeracyApp:
         drills_menu = Frame(ret)
         drills_menu.grid(column=0, row=0)
 
-        drills_header = Label(drills_menu, text='DRILLS', font=('Arial Bold', 30))
-        drills_header.pack(side=TOP)
+        drills_header = Label(drills_menu, text='DRILLS', font=('Arial Bold', 30), bg='orange')
+        drills_header.pack(side=TOP, fill=X, expand=YES)
 
         timestable = Button(drills_menu, text='times tables', font=('Arial Bold', 20), command=partial(drills.TimesTables, self))
         addition = Button(drills_menu, text='rapid addition', font=('Arial Bold', 20))
