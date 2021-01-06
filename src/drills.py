@@ -41,6 +41,9 @@ class Zetamac(Quizzer):
             a,b = randrange(*self.multn_spec[0]), randrange(*self.multn_spec[1])
             self.answer = a
             return ' / '.join([str(a*b), str(b)])
+    
+    def save_trial(self):
+        pass
 
 class TimesTables(Quizzer):
     def init_state(self):
@@ -62,4 +65,32 @@ class TimesTables(Quizzer):
         a,b = randrange(*self.lmult_spec), randrange(*self.rmult_spec)
         self.answer = a * b
         return ' * '.join([str(a), str(b)])
+
+    def save_trial(self):
+        pass
+
+class RapidAddition(Quizzer):
+    def init_state(self):
+        self.laddn_spec = (1,1000)
+        self.raddn_spec = (1,1000)
+
+    def next_problem(self):
+        self.input_box.delete(0, END)
+        self.problem_bar.configure(text = self.sample())
+
+    def input_callback(self, var, idx, mode):
+        if self.input_var.get().isdigit():
+            v = int(self.input_var.get())
+            if v == self.answer:
+                self.solved_ctr += 1
+                self.next_problem()
+    
+    def sample(self):
+        a,b = randrange(*self.laddn_spec), randrange(*self.raddn_spec)
+        self.answer = a + b
+        return ' + '.join([str(a), str(b)])
+
+    def save_trial(self):
+        pass
+
 

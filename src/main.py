@@ -1,5 +1,6 @@
 import drills
 from functools import partial
+import os
 from tkinter import *
 
 class NumeracyApp:
@@ -12,9 +13,11 @@ class NumeracyApp:
 
         # A dictionary of menus, name to frame
         self.menus = dict()
-
         self.menus['main'] = self.init_main()
-        
+
+        # Load in data from all profiles, settings etc
+        self.savedata = self.load_savedata()
+    
         self.display_menu('main')
         self.root.mainloop()
 
@@ -28,6 +31,16 @@ class NumeracyApp:
             self.menus[targmenu].grid()
             self.current_menu = targmenu
 
+    def load_savedata(self):
+        # for now, we only have a single profile for the addition
+        DIR = './profiles'
+        self.profiles = dict()
+        self.settings = dict()
+        with open(os.path.join(DIR, 'rapidaddition.csv'), 'a+') as d: 
+            self.profiles['rapidaddition'] = d.read()
+            
+
+
     def init_main(self):
         ret = Frame(self.root)
         
@@ -39,7 +52,7 @@ class NumeracyApp:
         drills_header.pack(side=TOP, fill=X, expand=YES)
 
         timestable = Button(drills_menu, text='times tables', font=('Arial Bold', 20), command=partial(drills.TimesTables, self))
-        addition = Button(drills_menu, text='rapid addition', font=('Arial Bold', 20))
+        addition = Button(drills_menu, text='rapid addition', font=('Arial Bold', 20), command=partial(drills.RapidAddition, self))
         zetamac = Button(drills_menu, text='zetamac vanilla', font=('Arial Bold', 20), command=partial(drills.Zetamac, self))
 
         timestable.pack(side=TOP)

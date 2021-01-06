@@ -70,6 +70,9 @@ class Quizzer(ABC):
     @abstractmethod
     def sample(self):
         raise NotImplementedError("Must override this method")
+    @abstractmethod
+    def save_trial(self):
+        raise NotImplementedError("Must override this method")
     
     def countdown(self, val):
         def _countdown(val, timer_id):
@@ -94,12 +97,16 @@ class Quizzer(ABC):
         self.end_frame.pack_forget()
         self.numeracyapp.display_menu('main')
     
-    def end_game(self):
+    def end_game(self, save=False):
         # Invalidate current timer
         self.timer_id += 1
 
         # Remove game_frame
         self.game_frame.pack_forget()
+
+        # Save result of this instance
+        if save: self.save_trial()
+         
 
         # Get end screen
         self.end_frame = Frame(self.numeracyapp.root, bg='purple')
