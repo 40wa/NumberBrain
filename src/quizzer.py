@@ -51,6 +51,7 @@ class Quizzer(ABC):
     def init_gamestate(self):
         self.answer = None
         self.solved_ctr = 0
+        self.curr_run = []
         self.next_problem()
 
     def input_callback_wrapper(self, var, idx, mode):

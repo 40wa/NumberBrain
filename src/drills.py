@@ -93,9 +93,9 @@ class RapidAddition(Quizzer):
             meta = -1
             elapsed = time.time() - self.tic
 
-            self.curr_run.append((problem, answer, meta, elapsed))
 
-             
+            self.curr_run.append((problem, answer, meta, elapsed))
+            print('curr_run len', len(self.curr_run))
             
             self.next_problem()
     
