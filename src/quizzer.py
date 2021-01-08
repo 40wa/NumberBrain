@@ -1,4 +1,5 @@
 from abc import ABC, ABCMeta, abstractmethod
+import time
 from tkinter import *
 
 class Quizzer(ABC):
@@ -44,15 +45,13 @@ class Quizzer(ABC):
 
     def run_game(self):
         self.answer = None
-        self.next_problem()
-        self.solved_ctr = 0
         self.countdown(120)
 
     def input_callback_wrapper(self, var, idx, mode):
         c = self.input_var.get()
-        if c == 'r':
+        if 'r' in c:
             self.run_game()
-        elif c == 'e':
+        elif 'e' in c:
             self.end_game()
         else:
             return self.input_callback(var, idx, mode)
@@ -74,19 +73,28 @@ class Quizzer(ABC):
     def save_trial(self):
         raise NotImplementedError("Must override this method")
     
-    def countdown(self, val):
-        def _countdown(val, timer_id):
+    def countdown(self, time_val):
+        print(time_val)
+        def _countdown(val, timer_id, grace):
+            print('val', val, 'timer_id', timer_id, 'time_val', time_val, 'grace', grace)
             if not (timer_id < self.timer_id):
                 if val < 1:
-                    print('done')
-                    self.end_game()
+                    if grace:
+                        print('GRACE OVER')
+                        self.next_problem()
+                        self.solved_ctr = 0
+                        _countdown(time_val, timer_id, not grace)
+                    else:
+                        print('GAME OVER! id:', self.timer_id)
+                        self.end_game()
                 else:
+                    #if val % 10 == 0:
                     print(val)
                     self.timer.configure(text=str(val))
-                    self.numeracyapp.root.after(1000, _countdown, val - 1, timer_id)
+                    self.numeracyapp.root.after(1000, _countdown, val - 1, timer_id, grace)
 
         self.timer_id += 1
-        _countdown(val, self.timer_id)
+        _countdown(3, self.timer_id, grace=True)
 
     def restore_game(self):
         self.end_frame.pack_forget()

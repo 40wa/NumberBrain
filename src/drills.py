@@ -12,7 +12,6 @@ class Zetamac(Quizzer):
         self.problem_bar.configure(text = self.sample())
 
     def input_callback(self, var, idx, mode):
-
         if self.input_var.get().isdigit():
             v = int(self.input_var.get())
 
@@ -46,7 +45,7 @@ class Zetamac(Quizzer):
         pass
 
 class TimesTables(Quizzer):
-    def init_state(self):
+    def init_state(self, save_data):
         self.lmult_spec = (1,26)
         self.rmult_spec = (1,26)
 
@@ -81,6 +80,7 @@ class RapidAddition(Quizzer):
     def input_callback(self, var, idx, mode):
         if self.input_var.get().isdigit():
             v = int(self.input_var.get())
+             
             if v == self.answer:
                 self.solved_ctr += 1
                 self.next_problem()

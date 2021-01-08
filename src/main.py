@@ -1,7 +1,10 @@
 import drills
+from util import *
+
 from functools import partial
 import os
 from tkinter import *
+import pandas as pd 
 
 class NumeracyApp:
     def __init__(self):
@@ -36,10 +39,9 @@ class NumeracyApp:
         DIR = './profiles'
         self.profiles = dict()
         self.settings = dict()
-        with open(os.path.join(DIR, 'rapidaddition.csv'), 'a+') as d: 
-            self.profiles['rapidaddition'] = d.read()
-            
-
+        self.profiles['rapidaddition'] = try_load('rapidaddition.csv')
+        self.profiles['timestable'] = try_load('timestable.csv')
+        self.profiles['zetamac vanilla'] = try_load('zetamac_vanilla.csv')
 
     def init_main(self):
         ret = Frame(self.root)
@@ -51,8 +53,14 @@ class NumeracyApp:
         drills_header = Label(drills_menu, text='DRILLS', font=('Arial Bold', 30), bg='orange')
         drills_header.pack(side=TOP, fill=X, expand=YES)
 
-        timestable = Button(drills_menu, text='times tables', font=('Arial Bold', 20), command=partial(drills.TimesTables, self))
-        addition = Button(drills_menu, text='rapid addition', font=('Arial Bold', 20), command=partial(drills.RapidAddition, self))
+        timestable = Button(drills_menu,
+                            text='times table',
+                            font=('Arial Bold', 20),
+                            command=partial(drills.TimesTables, self))
+        addition = Button(drills_menu,
+                          text='rapid addition',
+                          font=('Arial Bold', 20),
+                          command=partial(drills.RapidAddition, self))
         zetamac = Button(drills_menu, text='zetamac vanilla', font=('Arial Bold', 20), command=partial(drills.Zetamac, self))
 
         timestable.pack(side=TOP)
