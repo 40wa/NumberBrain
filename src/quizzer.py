@@ -18,7 +18,7 @@ class Quizzer(ABC):
         self.timer = Button(self.header, text='timer', font=('Arial Bold', 25))
         self.ctr = Button(self.header, text='CTR', font=('Arial Bold', 25))
         self.meta = Button(self.header, text='hiscore, ma', font=('Arial Bold', 25))
-        self.problem_bar = Label(self.game_frame, text='gottem', font=('Helvetica', 40))
+        self.problem_bar = Label(self.game_frame, text='GRACE PERIOD', font=('Helvetica', 40))
         self.input_box = Entry(self.game_frame, font=('Helvetica', 20))
 
         # Wire a StringVar to the input box for input checking
@@ -44,9 +44,14 @@ class Quizzer(ABC):
         self.run_game()
 
     def run_game(self):
-        self.answer = None
-        # The game start call is made within countdown
+        self.problem_bar.configure(text='GRACE PERIOD')
+        # In the countdown call, init_gamestate is called 
         self.countdown(120)
+
+    def init_gamestate(self):
+        self.answer = None
+        self.solved_ctr = 0
+        self.next_problem()
 
     def input_callback_wrapper(self, var, idx, mode):
         c = self.input_var.get()
@@ -75,15 +80,14 @@ class Quizzer(ABC):
         raise NotImplementedError("Must override this method")
     
     def countdown(self, time_val):
-        print(time_val)
+
         def _countdown(val, timer_id, grace):
             print('val', val, 'timer_id', timer_id, 'time_val', time_val, 'grace', grace)
             if not (timer_id < self.timer_id):
                 if val < 1:
                     if grace:
                         print('GRACE OVER')
-                        self.next_problem()
-                        self.solved_ctr = 0
+                        self.init_gamestate()
                         _countdown(time_val, timer_id, not grace)
                     else:
                         print('GAME OVER! id:', self.timer_id)
