@@ -37,7 +37,7 @@ class Quizzer(ABC):
         self.meta.pack(side=RIGHT, fill=X)
         self.problem_bar.pack(side=TOP)
         self.input_box.pack(side=TOP)
-        self.input_box.pack(side=TOP)
+        self.input_box.focus_set()
     
         # Init for first problem
         self.init_state()

@@ -1,6 +1,7 @@
 from tkinter import *
 from quizzer import Quizzer
 from random import randrange
+import time
 
 class Zetamac(Quizzer):
     def init_state(self):
@@ -9,6 +10,7 @@ class Zetamac(Quizzer):
 
     def next_problem(self):
         self.input_box.delete(0, END)
+        self.tic = time.time()
         self.problem_bar.configure(text = self.sample())
 
     def input_callback(self, var, idx, mode):
@@ -51,6 +53,7 @@ class TimesTables(Quizzer):
 
     def next_problem(self):
         self.input_box.delete(0, END)
+        self.tic = time.time()
         self.problem_bar.configure(text = self.sample())
 
     def input_callback(self, var, idx, mode):
@@ -70,24 +73,35 @@ class TimesTables(Quizzer):
 
 class RapidAddition(Quizzer):
     def init_state(self):
-        save_profile = self.numeracyapp.profiles['rapidaddition']
+        self.save_profile = self.numeracyapp.profiles['rapidaddition']
+        self.curr_run = []
         self.laddn_spec = (1,1000)
         self.raddn_spec = (1,1000)
 
     def next_problem(self):
         self.input_box.delete(0, END)
+        self.tic = time.time()
         self.problem_bar.configure(text = self.sample())
 
     def input_callback(self, var, idx, mode):
         if self.input_var.get().isdigit() and int(self.input_var.get()) == self.answer:
             self.solved_ctr += 1
+            
+            # Items to be logged after trial is over
+            problem = self.problem
+            answer = self.answer
+            meta = -1
+            elapsed = time.time() - self.tic
 
+            self.curr_run.append((problem, answer, meta, elapsed))
 
-
+             
+            
             self.next_problem()
     
     def sample(self):
         a,b = randrange(*self.laddn_spec), randrange(*self.raddn_spec)
+        self.problem = a,b
         self.answer = a + b
         return ' + '.join([str(a), str(b)])
 
