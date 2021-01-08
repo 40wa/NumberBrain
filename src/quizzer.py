@@ -45,6 +45,7 @@ class Quizzer(ABC):
 
     def run_game(self):
         self.answer = None
+        # The game start call is made within countdown
         self.countdown(120)
 
     def input_callback_wrapper(self, var, idx, mode):
