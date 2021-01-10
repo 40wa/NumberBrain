@@ -2,6 +2,8 @@ from tkinter import *
 from quizzer import Quizzer
 from random import randrange
 import time
+import numpy as np
+import pandas as pd
 
 class Zetamac(Quizzer):
     def init_state(self):
@@ -73,13 +75,24 @@ class TimesTables(Quizzer):
 
 class RapidAddition(Quizzer):
     def init_state(self):
-        self.save_profile = self.numeracyapp.profiles['rapidaddition']
+        self.quiz_name = 'rapidaddition'
+        if self.numeracyapp.profiles[self.quiz_name] is None:
+            self.numeracyapp.profiles[self.quiz_name] = pd.DataFrame([],
+                                                                     columns=[
+                                                                        'problem',
+                                                                        'answer', 
+                                                                        'meta',
+                                                                        'elapsed_runs',
+                                                                        'mean',
+                                                                        'variance'])
+
+        self.save_profile = self.numeracyapp.profiles[self.quiz_name]
+
         self.curr_run = []
-        self.laddn_spec = (1,100)
-        self.raddn_spec = (1,100)
+        self.laddn_spec = (1,10)
+        self.raddn_spec = (1,10)
 
     def next_problem(self):
-        print(self.save_profile)
         self.input_box.delete(0, END)
         self.tic = time.time()
         self.problem_bar.configure(text = self.sample())
@@ -107,12 +120,47 @@ class RapidAddition(Quizzer):
         return ' + '.join([str(a), str(b)])
 
     def save_trial(self):
+        print(self.save_profile)
         for t in self.curr_run:
             print(t)
+        
+        sp = self.save_profile
+
+        for t in self.curr_run:
+            t_problem = t[0]
+            t_answer = t[1]
+            t_meta = t[2]
+            t_elapsed = t[3]
+
+            # Has this pair been seen before?
+            idx_search = sp.index[sp['problem'] == t_problem]
+            if len(idx_search) == 0:
+                # Not seen before
+                print('not seen before')
+                sp.loc[len(sp)] = [t_problem, t_answer, -1, [t_elapsed], t_elapsed, 0]
+                 
+            elif len(idx_search) == 1:
+                # Seen before
+                # Correct row:
+                row = sp.iloc[idx_search[0]]
+
+                runs = row['elapsed_runs']
+                runs.append(t_elapsed)
+                if len(runs) > 10:
+                    runs = runs[-10:]
+                row['mean'] = np.mean(runs)
+                row['variance'] = np.var(runs)
+
+                sp.iloc[idx_search[0]] = row
+
+            else:
+                raise Exception('Multiple rows with the same problem')
+
+        if len(self.curr_run) > 0: 
+            sp.sort_values(by=['answer', 'problem'])
+            self.numeracyapp.save_savedata(self.quiz_name)
+            
 
 
-
-         
-          
 
 

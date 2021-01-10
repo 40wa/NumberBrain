@@ -36,12 +36,20 @@ class NumeracyApp:
 
     def load_savedata(self):
         # for now, we only have a single profile for the addition
-        DIR = './profiles'
+        SAVEDIR = './profiles'
         self.profiles = dict()
         self.settings = dict()
-        self.profiles['rapidaddition'] = try_load(DIR, 'rapidaddition.csv')
-        self.profiles['timestable'] = try_load(DIR, 'timestable.csv')
-        self.profiles['zetamac vanilla'] = try_load(DIR, 'zetamac_vanilla.csv')
+        self.profiles['rapidaddition'] = try_load(SAVEDIR, 'rapidaddition.csv')
+        self.profiles['timestable'] = try_load(SAVEDIR, 'timestable.csv')
+        self.profiles['zetamac vanilla'] = try_load(SAVEDIR, 'zetamac_vanilla.csv')
+
+    def save_savedata(self, name):
+        SAVEDIR = './profiles'
+        if name in self.profiles:
+            self.profiles[name].to_csv(os.path.join(SAVEDIR, name + '.csv'), index=False)
+        else:
+            raise Exception('Attempting to save a nonexistent profile')
+
 
     def init_main(self):
         ret = Frame(self.root)
