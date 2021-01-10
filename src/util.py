@@ -1,7 +1,11 @@
 import pandas as pd
+import os
 
-def try_load(file_loc):
+def try_load(DIR, file_loc):
+    p = os.path.join(DIR, file_loc)
     try:
-        return pd.read_csv(os.path.join(DIR, 'rapidaddition.csv'))
+        get = pd.read_csv(p)
+        print('Loading ... ', p)
+        return get
     except:
         return None

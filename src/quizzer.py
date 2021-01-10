@@ -46,7 +46,7 @@ class Quizzer(ABC):
     def run_game(self):
         self.problem_bar.configure(text='GRACE PERIOD')
         # In the countdown call, init_gamestate is called 
-        self.countdown(120)
+        self.countdown(5)
 
     def init_gamestate(self):
         self.answer = None
@@ -83,19 +83,19 @@ class Quizzer(ABC):
     def countdown(self, time_val):
 
         def _countdown(val, timer_id, grace):
-            print('val', val, 'timer_id', timer_id, 'time_val', time_val, 'grace', grace)
+            #print('val', val, 'timer_id', timer_id, 'time_val', time_val, 'grace', grace)
             if not (timer_id < self.timer_id):
                 if val < 1:
                     if grace:
-                        print('GRACE OVER')
+                        #print('GRACE OVER')
                         self.init_gamestate()
                         _countdown(time_val, timer_id, not grace)
                     else:
-                        print('GAME OVER! id:', self.timer_id)
-                        self.end_game()
+                        #print('GAME OVER! id:', self.timer_id)
+                        self.end_game(save=True)
                 else:
                     #if val % 10 == 0:
-                    print(val)
+                    #print(val)
                     self.timer.configure(text=str(val))
                     self.numeracyapp.root.after(1000, _countdown, val - 1, timer_id, grace)
 

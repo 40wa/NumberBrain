@@ -75,10 +75,11 @@ class RapidAddition(Quizzer):
     def init_state(self):
         self.save_profile = self.numeracyapp.profiles['rapidaddition']
         self.curr_run = []
-        self.laddn_spec = (1,1000)
-        self.raddn_spec = (1,1000)
+        self.laddn_spec = (1,100)
+        self.raddn_spec = (1,100)
 
     def next_problem(self):
+        print(self.save_profile)
         self.input_box.delete(0, END)
         self.tic = time.time()
         self.problem_bar.configure(text = self.sample())
@@ -106,6 +107,12 @@ class RapidAddition(Quizzer):
         return ' + '.join([str(a), str(b)])
 
     def save_trial(self):
-        pass
+        for t in self.curr_run:
+            print(t)
+
+
+
+         
+          
 
 

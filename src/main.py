@@ -39,9 +39,9 @@ class NumeracyApp:
         DIR = './profiles'
         self.profiles = dict()
         self.settings = dict()
-        self.profiles['rapidaddition'] = try_load('rapidaddition.csv')
-        self.profiles['timestable'] = try_load('timestable.csv')
-        self.profiles['zetamac vanilla'] = try_load('zetamac_vanilla.csv')
+        self.profiles['rapidaddition'] = try_load(DIR, 'rapidaddition.csv')
+        self.profiles['timestable'] = try_load(DIR, 'timestable.csv')
+        self.profiles['zetamac vanilla'] = try_load(DIR, 'zetamac_vanilla.csv')
 
     def init_main(self):
         ret = Frame(self.root)
