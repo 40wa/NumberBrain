@@ -109,7 +109,6 @@ class RapidAddition(Quizzer):
 
 
             self.curr_run.append((problem, answer, meta, elapsed))
-            print('curr_run len', len(self.curr_run))
             
             self.next_problem()
     
@@ -136,7 +135,6 @@ class RapidAddition(Quizzer):
             idx_search = sp.index[sp['problem'] == t_problem]
             if len(idx_search) == 0:
                 # Not seen before
-                print('not seen before')
                 sp.loc[len(sp)] = [t_problem, t_answer, -1, [t_elapsed], t_elapsed, 0]
                  
             elif len(idx_search) == 1:
@@ -157,7 +155,7 @@ class RapidAddition(Quizzer):
                 raise Exception('Multiple rows with the same problem')
 
         if len(self.curr_run) > 0: 
-            sp.sort_values(by=['answer', 'problem'])
+            sp.sort_values(by=['answer', 'problem'], inplace=True)
             self.numeracyapp.save_savedata(self.quiz_name)
             
 
