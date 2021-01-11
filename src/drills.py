@@ -75,6 +75,10 @@ class TimesTables(Quizzer):
         pass
 
 class RapidAddition(Quizzer):
+    #TODO: BUG
+    # Can't enter game then exit then reenter, we get a parse error because it's already been parsed before
+    #TODO: BUG
+    # Exiting during the countdown crashes the app
     def init_state(self):
         self.quiz_name = 'rapidaddition'
         if self.numeracyapp.profiles[self.quiz_name] is None:
