@@ -4,6 +4,7 @@ from random import randrange
 import time
 import numpy as np
 import pandas as pd
+import ast
 
 class Zetamac(Quizzer):
     def init_state(self):
@@ -85,6 +86,9 @@ class RapidAddition(Quizzer):
                                                                         'elapsed_runs',
                                                                         'mean',
                                                                         'variance'])
+        else:
+            sp = self.numeracyapp.profiles[self.quiz_name]
+            sp['problem'] = sp['problem'].apply(ast.literal_eval)
 
         self.save_profile = self.numeracyapp.profiles[self.quiz_name]
 
