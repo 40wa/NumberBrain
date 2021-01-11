@@ -89,6 +89,7 @@ class RapidAddition(Quizzer):
         else:
             sp = self.numeracyapp.profiles[self.quiz_name]
             sp['problem'] = sp['problem'].apply(ast.literal_eval)
+            sp['elapsed_runs'] = sp['elapsed_runs'].apply(ast.literal_eval)
 
         self.save_profile = self.numeracyapp.profiles[self.quiz_name]
 
@@ -150,8 +151,11 @@ class RapidAddition(Quizzer):
                 runs.append(t_elapsed)
                 if len(runs) > 10:
                     runs = runs[-10:]
+
+                pd.options.mode.chained_assignment = None 
                 row['mean'] = np.mean(runs)
                 row['variance'] = np.var(runs)
+                pd.options.mode.chained_assignment = 'warn'
 
                 sp.iloc[idx_search[0]] = row
 
